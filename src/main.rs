@@ -19,7 +19,14 @@ fn main() {
         println!("You guessed: {guess}");
 
 
-        let guess: i32 = guess.trim().parse().expect("Please type a number!");
+        let guess: i32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("Please type a number!");
+                continue
+            },
+        };
+
         let mut diff = guess - secret_number;
         diff = diff.abs();
         match guess.cmp(&secret_number) {
