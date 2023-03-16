@@ -5,20 +5,32 @@ use rand::Rng;
 fn main() {
     println!("Guess the number!");
 
-    println!("Please input your guess.");
-    let mut guess = String::new();
     let secret_number = rand::thread_rng().gen_range(1..=100);
 
-    io::stdin().read_line(&mut guess)
-               .expect("Faild to road line");
-    let guess: i32 = guess.trim().parse().expect("Please type a number!");
+    loop {     
+        println!("Please input your guess.");
 
-    match guess.cmp(&secret_number) {
-        Ordering::Less => println!("Too small! the difference is {}", guess-secret_number),
-        Ordering::Greater => println!("Too big! the difference is {}", guess-secret_number),
-        Ordering::Equal => println!("You win!"),
+        let mut guess = String::new();
+    
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
+    
+        println!("You guessed: {guess}");
+
+
+        let guess: i32 = guess.trim().parse().expect("Please type a number!");
+        let mut diff = guess - secret_number;
+        diff = diff.abs();
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small! the difference is {}", diff),
+            Ordering::Greater => println!("Too big! the difference is {}", diff),
+            Ordering::Equal => {
+                println!("You win!");
+                break;
+            }
+        }  
     }
-
-    println!("You guessed: {guess}");
+    
     println!("The secret number is: {secret_number}");
 }
